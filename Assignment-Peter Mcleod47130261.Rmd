@@ -4,3 +4,96 @@ author: "Peter Mcleod 47130261"
 date: '2022-05-20'
 output: pdf_document
 ---
+---
+title: "Stat2170 Assignment"
+author: "Peter Mcleod 47130261"
+date: '2022-05-19'
+output:
+  pdf_document: default
+  word_document: default
+---
+**Question 1 a.**
+```{r}
+hotel2022 <- read.csv("~/Downloads/hotel2022.dat", sep="")
+plot(hotel2022)
+
+Matrix <- cor(hotel2022)
+library(corrplot)
+corrplot(Matrix, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+There is a strong linear relationship between energy and area, also a very weak trend with age and energy aswell.
+
+**b**
+```{r}
+
+hotel2022.lm = lm(energy ~ area + age + rooms + occupancy, data = hotel2022)
+
+
+summary(hotel2022.lm)
+confint(hotel2022.lm,'area',level=0.95)
+```
+
+**C.**
+
+Hypothesis:
+area = 0
+age = 0
+rooms = 0
+occupancy = 0
+```{r}
+anova(hotel2022.lm)
+```
+Linear hypothesis test
+
+Hypothesis:
+area = 0
+age = 0
+rooms = 0
+occupancy = 0
+
+Model 1: restricted model
+Model 2: energy ~ area + age + rooms + occupancy
+
+  Res.Df       RSS Df Sum of Sq      F    Pr(>F)    
+1     15 250800150                                  
+2     11  14659219  4 236140931 44.299 1.019e-06 ***
+---
+Signif. codes:  
+0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1.
+
+
+F Statistic = 44.3
+conclusion - Reject null hypothesis
+
+
+
+
+**d.**
+
+full reggression model should be restricted as there are predictors that have very little impact on energy.
+
+
+
+**Question 2**
+```{r}
+movie <- read.csv("~/Downloads/movie.dat", sep="")
+
+```
+**a.**
+```{r}
+head(movie)
+table(movie[,1:2])
+```
+The design is unbalanced as the number of male and females are not equal in each genre
+
+**b**
+```{r}
+ with(movie, interaction.plot(Genre, Gender, Score, col = 1:2))
+with(movie, interaction.plot(Gender, Genre, Score, col = 1:3))
+```
+From the graphs there ia an interaction between the factors and the response since the lines have similar slopes between levels of each factor. The sample sizes are fairly high and hold enough power to show this
+
+**d**
+The effect of gender on the brand recall scores was evident with males being able to recall more brands. there was no interaction between gender and genre, both males and females struggled in the action genre, while both genders were proficient in recalling Drama.
+
